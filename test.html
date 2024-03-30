@@ -1,93 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Page</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
-
-    <style>
-      body, html {
-     height: 100%;
-     font-family: "Inconsolata", sans-serif;
-     }
-     .bgimg {
-       background-position: center;
-       background-size: cover;
-       background-image: url("/w3images/coffeehouse.jpg");
-       min-height: 75%;
-     }
-     .menu {
-       display: none;
-     }
-     .music-note{
-       font-size: 48px; /* Increased font-size for a larger music note */
-       margin-right: 10px; /* Add margin to create space between music note and text */
-     }
-   </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audio Recorder</title>
 </head>
-<body class="w3-sand w3-grayscale">
-    <!-- <div class="button-container back-container" style="text-align: left">
-        <a href="index.html" class="button">Back</a>
-    </div> -->
-
-    <!-- Adds the header links -->
-    <div class="w3-top">
-        <div class="w3-row w3-padding w3-black">
-          <div class="w3-col s3">
-            <span class="music-note">&#9835;</span>
-          </div>
-          <div class="w3-col s3">
-            <a href="index.html" class="w3-button w3-block w3-black">HOME</a>
-          </div>
-          <div class="w3-col s3">
-            <a href="about.html" class="w3-button w3-block w3-black">ABOUT</a>
-          </div>
-          <div class="w3-col s3">
-            <a href="#" class="w3-button w3-block w3-black">RECORD</a>
-          </div>
-        </div>
-      </div>
-
-    <div class="w3-content w3-center">
-      <header style="text-align:center">
-          <h1>NoteNest Recording Application</h1>
-      </header>
-      <main style="text-align:center">
-      <p>
-          Below are lies our NoteNest application! Please follow the steps below to get started<br />
-          1. Enter your Fret Count into the textbox<br />
-          2. Select which scale you will be recording in via the dropbox <br />
-          3. Press the record button and begin playing!!!!!! <br />
-      </p>
-      <br />
-      <label>Fret Count: </label>
-      <input id ="fretct" placeholder = 22>
-      <button id = "fretSubmit">submit</button><br><br> 
-      
-      
-      <div class="dropdown">
-          <button idclass="dropbtn">Dropdown</button>
-          <div class="dropdown-content">
-              
-              <a class="dropdown-item" href="#">Standard</a>
-              <a class="dropdown-item" href="#">Eb</a>
-              <a class="dropdown-item" href="#">Drop C</a>
-              <a class="dropdown-item" href="#">D Standard</a> 
-              <a class = "dropdown-item" href= "#">Drop D</a>
-              <a hr>
-          </div>
-      </div>
-
-      </main>
-      <footer style="text-align:center">
-          <p>&copy; 2024 NoteNest</p>
-      </footer>
-    </div>
-    <button id="startRecording">Start Recording</button>
-    <button id="stopRecording" disabled>Stop Recording</button>
-    <script src="test.js"></script>
+<body>
+<button id="startRecording">Start Recording</button>
+<button id="stopRecording" disabled>Stop Recording</button>
+<script src="app.js"></script>
 </body>
 </html>
