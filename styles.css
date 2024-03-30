@@ -21,6 +21,8 @@ body, html {
     border-top:40px snow;
     border-top-width: thick;
     border-top-style:dotted;
+    border-bottom-style: dotted;
+    border-bottom:40px snow;
     text-align: center;
 }
 
