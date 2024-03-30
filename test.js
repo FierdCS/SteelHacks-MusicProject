@@ -286,6 +286,7 @@ function displaytab(){
 
   function stopRecording() {
     mediaRecorder.stop();
+    displaytab();
     
     for (var note of frequencyAnalyzer.playedNotes) {
       getNotes(note.frequency);
