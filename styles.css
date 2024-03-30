@@ -85,7 +85,7 @@ body, html {
     top:0;
     width:0;
     height:0;
-    border-top:2px solid white;
+    border-top:2px solid rgb(8, 123, 255);
     animation: border-top 3s infinite alternate;
 }
 @keyframes border-top {
