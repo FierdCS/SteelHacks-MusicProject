@@ -1,3 +1,6 @@
+var fretCount;
+
+
 window.onclick = function(event) {
     if (!event.target.matches('.dropbtn')) {
       var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -8,5 +11,11 @@ window.onclick = function(event) {
           openDropdown.classList.remove('show');
         }
       }
+    }
+  }
+
+  window.onload = function(){
+    document.getElementById("fretSubmit").onclick = function(){
+    fretCount = parseInt(document.getElementById("fretct").value, 10);
     }
   }

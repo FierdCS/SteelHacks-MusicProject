@@ -34,6 +34,7 @@ body, html {
     font-weight: bold;
     display: inline-block; /* Display the logo name as inline-block */
     vertical-align: middle; /* Align the logo name vertically with the music note */
+    margin-bottom: 10px;
 }
 
 /* Style for the button container */
