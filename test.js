@@ -154,7 +154,7 @@ function bestChoice(arr)
     bestNote[0] = x[lowest];
     bestNote[1] = lowest;
     console.log("after" + bestNote);
-    noteList.push([x[lowest], lowest]);
+    notelist.push([x[lowest], lowest]);
   }
   
 }
