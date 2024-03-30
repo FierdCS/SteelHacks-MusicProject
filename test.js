@@ -1,5 +1,5 @@
 var fretCount;
-
+var tuning;
 
 window.onclick = function(event) {
     if (!event.target.matches('.dropbtn')) {
@@ -8,7 +8,8 @@ window.onclick = function(event) {
       for (i = 0; i < dropdowns.length; i++) {
         var openDropdown = dropdowns[i];
         if (openDropdown.classList.contains('show')) {
-          openDropdown.classList.remove('show');
+            
+            openDropdown.classList.remove('show');
         }
       }
     }
