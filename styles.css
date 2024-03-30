@@ -22,7 +22,8 @@ body, html {
 
 /* Style for the music note */
 .music-note {
-    font-size: 200px;
+    font-size: 120px; /* Make the music note bigger */
+    color: #333; /* Adjust color as needed */
 }
 
 /* Style for the logo name */
@@ -32,8 +33,31 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
-    color: #ffffff; /* Adjust color as needed */
+    color: #333; /* Adjust color as needed */
     font-weight: bold;
+}
+
+/* Style for the button container */
+.button-container {
+    margin-top: 20px;
+}
+
+/* Style for the buttons */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Vibrant blue */
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Darker shade of blue on hover */
 }
 
 .dropbtn {
@@ -76,4 +100,21 @@ body, html {
   
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+/* Style for the button container */
+.button-container{
+    margin-top:20px;
+}
+
+/* Style for the buttons */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    
+}
 
