@@ -246,6 +246,7 @@ function displaytab(){
   }  
   html += "</p>";
   // Output the longer string in format
+  document.getElementById('output').innerHTML = html;
 }
 
 
@@ -256,6 +257,7 @@ function displaytab(){
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(function(stream) {
         mediaRecorder = new MediaRecorder(stream);
+        frequencyAnalyzer.fromMicrophone(stream);
 
         mediaRecorder.ondataavailable = function(event) {
           if (event.data.size > 0) {
@@ -284,7 +286,11 @@ function displaytab(){
 
   function stopRecording() {
     mediaRecorder.stop();
-    frequencyAnalyzer.fromAudioElement(audioElement);
+    
+    for (var note of frequencyAnalyzer.playedNotes) {
+      getNotes(note.frequency);
+    }
+
     document.getElementById('startRecording').disabled = false;
     document.getElementById('stopRecording').disabled = true;
     document.getElementById('removeRecording').disabled = false;
@@ -307,6 +313,8 @@ function displaytab(){
   document.getElementById('removeRecording').addEventListener('click', removeRecording);
 
   var frequencyAnalyzer = new FrequencyAnalyzer();
+
+  frequencyAnalyzer.onNoteStart = getNotes;
   
   function FrequencyAnalyzer() {
     var self = this;
@@ -323,7 +331,7 @@ function displaytab(){
     var attackVolume = 170;
     var releaseVolume = 170;
 
-    var playedNotes = [];
+    this.playedNotes;
     var playingNotes = new Map();
 
     var audioContext;
@@ -344,6 +352,8 @@ function displaytab(){
     }
 
     function setup(fftSize = FFT_SIZE, minDecibels = MIN_DECIBELS, maxDecibels = MAX_DECIBELS, smoothingTimeConstant = SMOOTHING_TIME_CONSTANT) {
+        self.playedNotes = [];
+      
         audioContext = new AudioContext();
         analyzer = audioContext.createAnalyser();
         analyzer.fftSize = fftSize;
@@ -360,23 +370,13 @@ function displaytab(){
         }
     }
 
-    this.fromMicrophone = () => {
-        if (navigator.mediaDevices) {
-            try {
-                navigator.mediaDevices
-                    .getUserMedia({ audio: true, video: false })
-                    .then((stream) => {
-                        setup();
+    this.fromMicrophone = (stream) => {
+        setup();
 
-                        var source = audioContext.createMediaStreamSource(stream);
-                        source.connect(analyzer);
+        var source = audioContext.createMediaStreamSource(stream);
+        source.connect(analyzer);
 
-                        enable();
-                    });
-            } catch (e) {
-                console.log(e.message);
-            }
-        }
+        enable();
     }
 
     this.fromAudioElement = (audioElement) => {
