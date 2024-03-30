@@ -11,7 +11,7 @@ let G = [];
 let B = [];
 let e = [];
 
-let stringlist = ["e", "B", "G", "D", "A", "E"];
+let stringlist = ["E", "A", "D", "G", "B", "e"];
 
 let Enote = [];
 
@@ -217,14 +217,19 @@ function binary(arr, l, r, x)
 function displaytab(){
   let html = '<p>'
   let counter = 0;
+  let len = notelist.length
+
   // notelist : 2d array of notes inputted in order
 
+
   // Generates the long string to output
-  for(let b = 0; b < 6; b++)
+  for(let b = 5; b >= 0; b--)
   {
-    
-    for(let i = 0; i < 62; i++)//20 notes each line
+    html +=  stringlist[b]
+    for(let i = 0; i < 64; i++)//20 notes each line
     {
+      if(counter == notelist.length)
+        break;
       if(i%3 == 0)
       {
         if (notelist[counter][1] == b)
@@ -238,8 +243,9 @@ function displaytab(){
         html += "-";
       }
     }
-    counter = 0;
-    html += "<br />"; 
+    if(b != 0)
+      counter = 0;
+    html += "</br>"; 
   }
 
   html += "</p>";
@@ -248,24 +254,34 @@ function displaytab(){
 
 }
 
+
   let mediaRecorder;
   let recordedChunks = [];
-  
+  let audioElement;
+
   function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(function(stream) {
         mediaRecorder = new MediaRecorder(stream);
-  
+
         mediaRecorder.ondataavailable = function(event) {
           if (event.data.size > 0) {
             recordedChunks.push(event.data);
           }
         };
-  
-        mediaRecorder.onstop = function() {
-          saveRecording();
+
+        mediaRecorder.onstart = function() {
+          audioElement = document.createElement('audio');
+          document.body.appendChild(audioElement);
         };
-  
+
+        mediaRecorder.onstop = function() {
+          returnRecording(function(blob) {
+            audioElement.src = URL.createObjectURL(blob);
+            audioElement.controls = true;
+          });
+        };
+
         mediaRecorder.start();
         document.getElementById('startRecording').disabled = true;
         document.getElementById('stopRecording').disabled = false;
@@ -274,31 +290,25 @@ function displaytab(){
         console.error('Error accessing microphone:', err);
       });
   }
-  
+
   function stopRecording() {
     mediaRecorder.stop();
     document.getElementById('startRecording').disabled = false;
     document.getElementById('stopRecording').disabled = true;
   }
-  
-  function saveRecording() {
-    const blob = new Blob(recordedChunks, { type: 'audio/aac' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'recorded.mp4';
-    document.body.appendChild(a);
-    a.click();
-    URL.revokeObjectURL(url);
+
+  function returnRecording(callback) {
+    const blob = new Blob(recordedChunks, { type: 'audio/mpeg' });
+    callback(blob);
   }
-  
+
   document.getElementById('startRecording').addEventListener('click', startRecording);
   document.getElementById('stopRecording').addEventListener('click', stopRecording);
 
   function FrequencyAnalyzer() {
     var self = this;
 
-    const FFT_SIZE = 16384;
+    const FFT_SIZE = 8192;
     const MIN_DECIBELS = -130;
     const MAX_DECIBELS = 0;
     const SMOOTHING_TIME_CONSTANT = 0.3;
