@@ -252,7 +252,7 @@ function displaytab(){
 
   let mediaRecorder;
   let recordedChunks = [];
-
+  let audioElement;
   function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(function(stream) {
@@ -267,7 +267,7 @@ function displaytab(){
 
         mediaRecorder.onstop = function() {
           returnRecording(function(blob) {
-            const audioElement = document.getElementById('recordedAudio');
+            audioElement = document.getElementById('recordedAudio');
             audioElement.src = URL.createObjectURL(blob);
             audioElement.play();
             document.getElementById('removeRecording').disabled = false;
@@ -339,7 +339,6 @@ function displaytab(){
     var analyzer;
     var frequencyBuffer;
     var frequencyBinWidth;
-    var xvalues;
 
     var sampleTimer;
 
@@ -363,12 +362,6 @@ function displaytab(){
         analyzer.smoothingTimeConstant = smoothingTimeConstant;
         frequencyBuffer = new Uint8Array(analyzer.frequencyBinCount);
         frequencyBinWidth = audioContext.sampleRate / (2 * analyzer.frequencyBinCount);
-
-        xvalues = [];
-
-        for (let i = 0; i < frequencyBuffer.length; i++) {
-            xvalues.push(i * frequencyBinWidth);
-        }
     }
 
     this.fromMicrophone = (stream) => {
@@ -404,18 +397,6 @@ function displaytab(){
 
     function sample() {
         analyzer.getByteFrequencyData(frequencyBuffer);
-
-        Plotly.newPlot(chart, [{
-            x: xvalues,
-            y: frequencyBuffer
-        }], {
-            xaxis: {
-                range: [0, 8192]
-            },
-            yaxis: {
-                range: [0, 255]
-            }
-        });
 
         var movingSum = 0;
         var pointCount = halfWindowSize;
