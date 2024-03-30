@@ -20,7 +20,7 @@ body, html {
     background-color:#FFFFFF;
     border-top:5px solid;
     border-top-width: thick;
-    border-top-style: groove;
+    border-top-style:dotted;
     text-align: center;
 }
 
