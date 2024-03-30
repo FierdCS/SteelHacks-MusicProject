@@ -126,8 +126,9 @@ body, html {
     justify-content: space-between;
 }
 
-.left, .right{
+.left, .right, .center{
     display: flex;
         flex-direction: column;
 }
+
 
