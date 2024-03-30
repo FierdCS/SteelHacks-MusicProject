@@ -217,47 +217,43 @@ function binary(arr, l, r, x)
 function displaytab(){
   let html = '<p>'
   let counter = 0;
-  let len = notelist.length
-
+  let len = Math.floor(notelist.length/20);
   // notelist : 2d array of notes inputted in order
-
-
   // Generates the long string to output
-  for(let b = 5; b >= 0; b--)
+  for(let a = 0; a < len; a++)
   {
-    html +=  stringlist[b]
-    for(let i = 0; i < 64; i++)//20 notes each line
+    for(let b = 5; b >= 0; b--)
     {
-      if(counter == notelist.length)
-        break;
-      if(i%3 == 0)
+      html +=  stringlist[b]
+      for(let i = 0; i < 64; i++)//20 notes each line
       {
-        if (notelist[counter][1] == b)
+        if(counter == notelist.length)
+          break;
+        if(i%3 == 0)
         {
-          html += notelist[counter][0];
+          if (notelist[counter][1] == b)
+          {
+            html += notelist[counter][0];
+          }
+          counter++;  
         }
-        counter++;  
+        else // Adds a hyphen for every single part that does not hold a note
+        {
+          html += "-";
+        }
       }
-      else // Adds a hyphen for every single part that does not hold a note
-      {
-        html += "-";
-      }
+      if(b != 0)
+        counter = 0;
+      html += "</br>"; 
     }
-    if(b != 0)
-      counter = 0;
-    html += "</br>"; 
-  }
-
+  }  
   html += "</p>";
   // Output the longer string in format
-
-
 }
 
 
   let mediaRecorder;
   let recordedChunks = [];
-  let audioElement;
 
   function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -270,15 +266,11 @@ function displaytab(){
           }
         };
 
-        mediaRecorder.onstart = function() {
-          audioElement = document.createElement('audio');
-          document.body.appendChild(audioElement);
-        };
-
         mediaRecorder.onstop = function() {
           returnRecording(function(blob) {
+            const audioElement = document.getElementById('recordedAudio');
             audioElement.src = URL.createObjectURL(blob);
-            audioElement.controls = true;
+            audioElement.play();
           });
         };
 
@@ -305,6 +297,7 @@ function displaytab(){
   document.getElementById('startRecording').addEventListener('click', startRecording);
   document.getElementById('stopRecording').addEventListener('click', stopRecording);
 
+  
   function FrequencyAnalyzer() {
     var self = this;
 
