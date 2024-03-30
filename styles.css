@@ -78,6 +78,20 @@ body, html {
     margin: 0 10px;
     transition: background-color 0.3s;
 }
+.button:before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    width:0;
+    height:0;
+    border-top:2px solid white;
+    animation: border-top 3s infinite alternate;
+}
+@keyframes border-top {
+    0%{width: 0px; height: 0px;}
+    100%{width: 200px; height: 0px;}
+}
 
 .button:hover {
     background-color: #303b3c; /* Darker shade of blue on hover */
