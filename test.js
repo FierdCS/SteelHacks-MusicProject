@@ -294,3 +294,227 @@ function displaytab(){
   
   document.getElementById('startRecording').addEventListener('click', startRecording);
   document.getElementById('stopRecording').addEventListener('click', stopRecording);
+
+  function FrequencyAnalyzer() {
+    var self = this;
+
+    const FFT_SIZE = 16384;
+    const MIN_DECIBELS = -130;
+    const MAX_DECIBELS = 0;
+    const SMOOTHING_TIME_CONSTANT = 0.3;
+    
+    const SAMPLING_INTERVAL = 16.66;
+    var peakThreshold = 30;
+    const windowSize = 256;
+    var halfWindowSize = windowSize / 2;
+    var attackVolume = 170;
+    var releaseVolume = 150;
+
+    var playedNotes = [];
+    var playingNotes = new Map();
+
+    var audioContext;
+    var analyzer;
+    var frequencyBuffer;
+    var frequencyBinWidth;
+    var xvalues;
+
+    var sampleTimer;
+
+    this.onNoteStart = null;
+    this.onNoteStop = null;
+
+    function Note(frequency, startTime, duration) {
+        this.frequency = frequency;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    function setup(fftSize = FFT_SIZE, minDecibels = MIN_DECIBELS, maxDecibels = MAX_DECIBELS, smoothingTimeConstant = SMOOTHING_TIME_CONSTANT) {
+        audioContext = new AudioContext();
+        analyzer = audioContext.createAnalyser();
+        analyzer.fftSize = fftSize;
+        analyzer.minDecibels = minDecibels;
+        analyzer.maxDecibels = maxDecibels;
+        analyzer.smoothingTimeConstant = smoothingTimeConstant;
+        frequencyBuffer = new Uint8Array(analyzer.frequencyBinCount);
+        frequencyBinWidth = audioContext.sampleRate / (2 * analyzer.frequencyBinCount);
+
+        xvalues = [];
+
+        for (let i = 0; i < frequencyBuffer.length; i++) {
+            xvalues.push(i * frequencyBinWidth);
+        }
+    }
+
+    this.fromMicrophone = () => {
+        if (navigator.mediaDevices) {
+            try {
+                navigator.mediaDevices
+                    .getUserMedia({ audio: true, video: false })
+                    .then((stream) => {
+                        setup();
+
+                        var source = audioContext.createMediaStreamSource(stream);
+                        source.connect(analyzer);
+
+                        enable();
+                    });
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+    }
+
+    this.fromAudioElement = (audioElement) => {
+        try {
+            setup();
+
+            var source = audioContext.createMediaElementSource(audioElement);
+            source.connect(analyzer);
+            source.connect(audioContext.destination);
+
+            enable();
+        } catch (e) {
+            console.log(e.message);
+        }
+    }
+
+    function enable() {
+        sampleTimer = setInterval(sample, SAMPLING_INTERVAL);
+    }
+
+    function disable() {
+        clearInterval(sampleTimer);
+    }
+
+    function sample() {
+        analyzer.getByteFrequencyData(frequencyBuffer);
+
+        Plotly.newPlot(chart, [{
+            x: xvalues,
+            y: frequencyBuffer
+        }], {
+            xaxis: {
+                range: [0, 8192]
+            },
+            yaxis: {
+                range: [0, 255]
+            }
+        });
+
+        var movingSum = 0;
+        var pointCount = halfWindowSize;
+
+        // Pre-populate
+        for (let i = 0; i < halfWindowSize; i++) {
+            movingSum += frequencyBuffer[i];
+        }
+
+        // Left edge
+        for (let i = 0; i < halfWindowSize; i++) {
+            pointCount++;
+            movingSum += frequencyBuffer[pointCount];
+            let threshold = movingSum / pointCount + peakThreshold;
+
+            if (frequencyBuffer[i] > threshold) {
+                var maxIndex = indexOfMax(frequencyBuffer, 0, i + halfWindowSize);
+                processNote(maxIndex);
+                return;
+            }
+        }
+
+        // Middle
+        const end = movingSum - halfWindowSize;
+
+        for (let i = halfWindowSize; i < end; i++) {
+            movingSum -= frequencyBuffer[i - halfWindowSize];
+            movingSum += frequencyBuffer[i + halfWindowSize];
+            let threshold = movingSum / windowSize + peakThreshold;
+
+            if (frequencyBuffer[i] > threshold) {
+                var maxIndex = indexOfMax(frequencyBuffer, i - halfWindowSize, i + halfWindowSize);
+                processNote(maxIndex);
+                return;
+            }
+        }
+
+        // Right edge
+        for (let i = frequencyBuffer.length - halfWindowSize; i < frequencyBuffer.length; i++) {
+            pointCount--;
+            movingSum -= frequencyBuffer[i - halfWindowSize];
+            let threshold = movingSum / pointCount + peakThreshold;
+
+            if (frequencyBuffer[i] > threshold) {
+                var maxIndex = indexOfMax(frequencyBuffer, i - halfWindowSize, frequencyBuffer.length);
+                processNote(maxIndex);
+                return;
+            }
+        }
+    }
+
+    function processNote(index) {
+        var amplitude = frequencyBuffer[index];
+
+        if (amplitude > attackVolume) {
+            if (!playingNotes.has(index) && playingNotes.size == 0) {
+                noteStartedPlaying(index);
+            }
+        }
+
+        for (let index of playingNotes.keys()) {
+            if (frequencyBuffer[index] < releaseVolume) {
+                noteStoppedPlaying(index);
+            }
+        }
+    }
+
+    function noteStartedPlaying(index) {
+        playingNotes.set(index, Date.now());
+        
+        if (self.onNoteStart) {
+            self.onNoteStart(index * frequencyBinWidth);
+        }
+    }
+
+    function noteStoppedPlaying(index) {
+        var frequency = index * frequencyBinWidth;
+        var startTime = playingNotes[index];
+        var duration = Date.now() - startTime;
+        var note = new Note(frequency, startTime, duration);
+
+        playedNotes.push(note);
+        playingNotes.delete(index);
+
+        if (self.onNoteStop) {
+            self.onNoteStop(index * frequencyBinWidth);
+        }
+    }
+
+    function getFrequencies(frequencies) {
+        var frequencies = [];
+
+        var maxIndex = indexOfMax(frequencyBuffer);
+
+        if (frequencyBuffer[maxIndex] > attackVolume) {
+            var frequency = maxIndex * frequencyBinWidth;
+            frequencies.push(frequency);
+        }
+
+        return frequencies;
+    }
+}
+
+function indexOfMax(a, start, end) {
+    var maxValue = a[start];
+    var maxIndex = start;
+
+    for (let i = start + 1; i < end; i++) {
+        if (a[i] > maxValue) {
+            maxValue = a[i];
+            maxIndex = i;
+        }
+    }
+
+    return maxIndex;
+}
