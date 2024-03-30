@@ -20,5 +20,11 @@ window.onclick = function(event) {
     fretCount = parseInt(document.getElementById("fretct").value, 10);
     }
 
-    var 
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+
+    for (var dropdown of dropdowns) {
+      for (var dropdownItem of dropdown.children) {
+        dropd
+      }
+    }
   }

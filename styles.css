@@ -11,13 +11,14 @@ body, html {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    /*align-items: center;*/
 }
 
 /* Style for the logo container */
 .logo-container {
     position: relative;
     margin-top: 50px;
+    align-self: center;
 }
 
 .music-note {
