@@ -51,7 +51,7 @@ body, html {
     margin-top: 50px;
 }
 
-/* Style for the button container */
+/*Style for the button container
 .button-container {
     width:200px;
     height:50px;
@@ -62,9 +62,8 @@ body, html {
     display: flex;
     align-items: right;
     justify-content: right; /* Center the buttons horizontally */
-    cursor:pointer;
-}
-
+    
+*/
 /* Style for the buttons */
 .button {
     display: inline-block;
