@@ -16,41 +16,22 @@ body, html {
 
 /* Style for the logo container */
 .logo-container {
-    width: 200px;
-    height: 200px;
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%; /* Make it a circle */
-    font-family: Arial, sans-serif;
-    text-transform: uppercase; /* Convert text to uppercase */
-    font-weight: bold;
+    position: relative;
+    margin-top: 50px;
+}
+
+/* Style for the music note */
+.music-note {
+    font-size: 72px;
+}
+
+/* Style for the logo name */
+.logo-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     font-size: 24px;
-    letter-spacing: 2px; /* Increase letter spacing */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow effect */
-}
-
-/* Style for the button container */
-.button-container {
-    margin-top: 20px;
-}
-
-/* Style for the buttons */
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 10px;
-    transition: background-color 0.3s;
-}
-
-.button:hover {
-    background-color: #0056b3;
+    color: #333; /* Adjust color as needed */
+    font-weight: bold;
 }
