@@ -48,7 +48,7 @@ body, html {
 .button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff; /* Vibrant blue */
+    background-color: #435C5F; /* Vibrant blue NO LONGER VIBRANT BLUE*/
     color: #fff;
     text-decoration: none;
     border: none;
@@ -59,7 +59,7 @@ body, html {
 }
 
 .button:hover {
-    background-color: #0056b3; /* Darker shade of blue on hover */
+    background-color: #303b3c; /* Darker shade of blue on hover */
 }
 
 .dropbtn {
