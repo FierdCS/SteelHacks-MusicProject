@@ -44,18 +44,18 @@ window.onclick = function(event) {
   let mediaRecorder;
   let recordedChunks = [];
   
-  const startRecording = () => {
+  function startRecording() {
     navigator.mediaDevices.getUserMedia({ audio: true })
-      .then(stream => {
+      .then(function(stream) {
         mediaRecorder = new MediaRecorder(stream);
   
-        mediaRecorder.ondataavailable = event => {
+        mediaRecorder.ondataavailable = function(event) {
           if (event.data.size > 0) {
             recordedChunks.push(event.data);
           }
         };
   
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = function() {
           saveRecording();
         };
   
@@ -63,18 +63,18 @@ window.onclick = function(event) {
         document.getElementById('startRecording').disabled = true;
         document.getElementById('stopRecording').disabled = false;
       })
-      .catch(err => {
+      .catch(function(err) {
         console.error('Error accessing microphone:', err);
       });
-  };
+  }
   
-  const stopRecording = () => {
+  function stopRecording() {
     mediaRecorder.stop();
     document.getElementById('startRecording').disabled = false;
     document.getElementById('stopRecording').disabled = true;
-  };
+  }
   
-  const saveRecording = () => {
+  function saveRecording() {
     const blob = new Blob(recordedChunks, { type: 'audio/aac' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -83,7 +83,7 @@ window.onclick = function(event) {
     document.body.appendChild(a);
     a.click();
     URL.revokeObjectURL(url);
-  };
+  }
   
   document.getElementById('startRecording').addEventListener('click', startRecording);
   document.getElementById('stopRecording').addEventListener('click', stopRecording);
