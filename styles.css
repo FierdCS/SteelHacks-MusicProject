@@ -33,7 +33,7 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
-    color: #333; /* Adjust color as needed */
+    color: #00eaff; /* Adjust color as needed */
     font-weight: bold;
 }
 
@@ -115,6 +115,8 @@ body, html {
     text-decoration: none;
     border: none;
     border-radius: 5px;
-    
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s;
 }
 
