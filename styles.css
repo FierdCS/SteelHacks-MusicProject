@@ -11,6 +11,7 @@ body, html {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    background-color: #F4FAF8;
     /*align-items: center;*/
 }
 
@@ -129,6 +130,7 @@ body, html {
 .left, .right, .center{
     display: flex;
         flex-direction: column;
+    text-align: flex;
 }
 
 
