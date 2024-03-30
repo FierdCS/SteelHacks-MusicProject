@@ -11,7 +11,7 @@ let G = [];
 let B = [];
 let e = [];
 
-let stringlist = ["e", "B", "G", "D", ""]
+let stringlist = ["e", "B", "G", "D", "A", "E"];
 
 let Enote = [];
 
@@ -239,10 +239,10 @@ function displaytab(){
       }
     }
     counter = 0;
-    html += "<br />" 
+    html += "<br />"; 
   }
 
-  html += "</p>"
+  html += "</p>";
   // Output the longer string in format
 
 
