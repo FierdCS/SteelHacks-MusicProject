@@ -2,12 +2,19 @@ var capo = 0;
 var fretCount = 22;
 var tuning = "Standard";
 let bestNote = [0,2]
+let notelist = [];
+
 let E = [];
 let A = [];
 let D = [];
 let G = [];
 let B = [];
 let e = [];
+
+let stringlist = ["e", "B", "G", "D", ""]
+
+let Enote = [];
+
 let tunings = ["Standard", "Eb", "DropC", "Dstand"] 
 let Standard = [164.81, 220, 293.66, 392, 493.88, 659.29]; //EADGBE
 let Eb = [155.56, 207.65, 277.18, 369.99, 466.16, 622.25]; //EbAbDbGbBbEb
@@ -132,6 +139,7 @@ function bestChoice(arr)
     bestNote.push(x[lowest]);
     bestNote.push(lowest);
     console.log(bestNote);
+    noteList.push([x[lowest], lowest]);
   }
   else
   {
@@ -149,6 +157,7 @@ function bestChoice(arr)
     bestNote[0] = x[lowest];
     bestNote[1] = lowest;
     console.log("after" + bestNote);
+    noteList.push([x[lowest], lowest]);
   }
   
 }
@@ -197,12 +206,46 @@ function binary(arr, l, r, x)
   }
   else if(Math.abs(arr[l - 1] - x) > Math.abs(arr[l + 1] - x) && Math.abs(arr[l] - x) > Math.abs(arr[l + 1] - x))
   {
-  //console.log("return l-1: " + arr[l-1] + "index: " + l+1);
+  //console.log("return l-1] + "index: " + l+1);
     return l + 1 - capo;
   }
-  else
+  else{
     return l - 1 - capo;
-  
+  }
+}
+
+function displaytab(){
+  let html = '<p>'
+  let counter = 0;
+  // notelist : 2d array of notes inputted in order
+
+  // Generates the long string to output
+  for(let b = 0; b < 6; b++)
+  {
+    
+    for(let i = 0; i < 62; i++)//20 notes each line
+    {
+      if(i%3 == 0)
+      {
+        if (notelist[counter][1] == b)
+        {
+          html += notelist[counter][0];
+        }
+        counter++;  
+      }
+      else // Adds a hyphen for every single part that does not hold a note
+      {
+        html += "-";
+      }
+    }
+    counter = 0;
+    html += "<br />" 
+  }
+
+  html += "</p>"
+  // Output the longer string in format
+
+
 }
 
   let mediaRecorder;
