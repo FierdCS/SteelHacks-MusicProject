@@ -30,7 +30,7 @@ body, html {
 /* Style for the logo name */
 .logo-name {
     font-size: 24px;
-    color: #00eaff; /* Adjust color as needed */
+    color: #000000; /* Adjust color as needed */
     font-weight: bold;
     display: inline-block; /* Display the logo name as inline-block */
     vertical-align: middle; /* Align the logo name vertically with the music note */
