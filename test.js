@@ -301,6 +301,7 @@ function displaytab(){
     const audioElement = document.getElementById('recordedAudio');
     audioElement.src = '';
     document.getElementById('removeRecording').disabled = true;
+    document.getElementById('startRecording').disabled = false;
   }
 
   function returnRecording(callback) {
