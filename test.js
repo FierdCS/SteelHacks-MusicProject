@@ -478,7 +478,7 @@ function displaytab(){
         var duration = Date.now() - startTime;
         var note = new Note(frequency, startTime, duration);
 
-        playedNotes.push(note);
+        self.playedNotes.push(note);
         playingNotes.delete(index);
 
         if (self.onNoteStop) {
