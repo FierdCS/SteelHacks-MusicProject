@@ -79,10 +79,6 @@ function setup()
     B[i] = tuneArr[4] * Math.pow(2,(i/12));
     e[i] = tuneArr[5] * Math.pow(2,(i/12));
   }
-  for(let b = 0; b < fretCount; b++)
-    console.log(D[b]);
-  
-  getNotes(415.3);
 }
 
 function getNotes(freq)
@@ -121,7 +117,8 @@ function getNotes(freq)
     Cordinates.push(5);
   }
   console.log(Cordinates)
-  bestChoice(Cordinates);
+  if(Cordinates.length > 0)
+    bestChoice(Cordinates);
 }
 
 function bestChoice(arr)
@@ -139,7 +136,7 @@ function bestChoice(arr)
     bestNote.push(x[lowest]);
     bestNote.push(lowest);
     console.log(bestNote);
-    noteList.push([x[lowest], lowest]);
+    notelist.push([x[lowest], lowest]);
   }
   else
   {
@@ -217,7 +214,7 @@ function binary(arr, l, r, x)
 function displaytab(){
   let html = '<p>'
   let counter = 0;
-  let len = Math.floor(notelist.length/20);
+  let len = Math.ceil(notelist.length/20);
   // notelist : 2d array of notes inputted in order
   // Generates the long string to output
   for(let a = 0; a < len; a++)
@@ -287,6 +284,7 @@ function displaytab(){
 
   function stopRecording() {
     mediaRecorder.stop();
+    frequencyAnalyzer.fromAudioElement(audioElement);
     document.getElementById('startRecording').disabled = false;
     document.getElementById('stopRecording').disabled = true;
     document.getElementById('removeRecording').disabled = false;
@@ -308,21 +306,22 @@ function displaytab(){
   document.getElementById('stopRecording').addEventListener('click', stopRecording);
   document.getElementById('removeRecording').addEventListener('click', removeRecording);
 
-
+  var frequencyAnalyzer = new FrequencyAnalyzer();
+  
   function FrequencyAnalyzer() {
     var self = this;
 
     const FFT_SIZE = 8192;
     const MIN_DECIBELS = -130;
     const MAX_DECIBELS = 0;
-    const SMOOTHING_TIME_CONSTANT = 0.3;
+    const SMOOTHING_TIME_CONSTANT = 0.2;
     
     const SAMPLING_INTERVAL = 16.66;
-    var peakThreshold = 30;
+    var peakThreshold = 20;
     const windowSize = 256;
     var halfWindowSize = windowSize / 2;
     var attackVolume = 170;
-    var releaseVolume = 150;
+    var releaseVolume = 170;
 
     var playedNotes = [];
     var playingNotes = new Map();
