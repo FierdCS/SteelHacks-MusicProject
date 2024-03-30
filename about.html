@@ -6,24 +6,38 @@
     <title>About Us</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<script>
-
-</script>
 <body>
-    <div class ="button-container back-container" style="text-align: left">
+    <div class="button-container back-container" style="text-align: left">
         <a href="index.html" class="button left">Back</a>
     </div>
+    
     <header>
-        <h1>About Us</h1>
+        <h1 class="center">About Us</h1>
     </header>
-    <main>
-        <h2> Who are we </h2>
+    
+    <main class="center">
+        <h2>Who are we</h2>
         
-        <p>We are a music enthusiasts that are intrigued in building the latest and greatest music innovation to help others learn how to play instruments</p>
+        <p>We are music enthusiasts intrigued by building the latest and greatest music innovations to help others learn how to play instruments.</p>
         <img src="edsheeran.gif" alt="">
+        
+        <p>Click the buttons to play notes from an octave of keys (C4 to C5).</p>
+        <div id="keyboard">
+            <button onclick="playSound('C4')">C</button>
+            <button onclick="playSound('D4')">D</button>
+            <button onclick="playSound('E4')">E</button>
+            <button onclick="playSound('F4')">F</button>
+            <button onclick="playSound('G4')">G</button>
+            <button onclick="playSound('A4')">A</button>
+            <button onclick="playSound('B4')">B</button>
+            <button onclick="playSound('C5')">C</button>
+        </div>
     </main>
-    <footer>
+    
+    <footer class="center">
         <p>&copy; 2024 NoteNest</p>
     </footer>
+    
+    <script src="about.js"></script>
 </body>
 </html>
