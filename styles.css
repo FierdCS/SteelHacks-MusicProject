@@ -20,21 +20,20 @@ body, html {
     margin-top: 50px;
 }
 
-/* Style for the music note */
 .music-note {
     font-size: 120px; /* Make the music note bigger */
     color: #333; /* Adjust color as needed */
+    float: left; /* Float the music note to the left */
+    margin-right: 20px; /* Add margin to create space between music note and logo name */
 }
 
 /* Style for the logo name */
 .logo-name {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     font-size: 24px;
     color: #00eaff; /* Adjust color as needed */
     font-weight: bold;
+    display: inline-block; /* Display the logo name as inline-block */
+    vertical-align: middle; /* Align the logo name vertically with the music note */
 }
 
 /* Style for the button container */
