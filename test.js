@@ -252,63 +252,61 @@ function displaytab(){
 }
 
 
-let mediaRecorder;
-let recordedChunks = [];
+  let mediaRecorder;
+  let recordedChunks = [];
 
-function startRecording() {
-  return new Promise((resolve, reject) => {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-          .then(function (stream) {
-              mediaRecorder = new MediaRecorder(stream);
+  function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        mediaRecorder = new MediaRecorder(stream);
 
-              mediaRecorder.ondataavailable = function (event) {
-                  if (event.data.size > 0) {
-                      recordedChunks.push(event.data);
-                  }
-              };
+        mediaRecorder.ondataavailable = function(event) {
+          if (event.data.size > 0) {
+            recordedChunks.push(event.data);
+          }
+        };
 
-              mediaRecorder.onstop = function () {
-                  returnRecording(function (blob) {
-                      const audioElement = document.createElement('audio');
-                      audioElement.src = URL.createObjectURL(blob);
-                      audioElement.controls = true;
-                      resolve(audioElement);
-                  });
-              };
-
-              mediaRecorder.start();
-              document.getElementById('startRecording').disabled = true;
-              document.getElementById('stopRecording').disabled = false;
-          })
-          .catch(function (err) {
-              console.error('Error accessing microphone:', err);
-              reject(err);
+        mediaRecorder.onstop = function() {
+          returnRecording(function(blob) {
+            const audioElement = document.getElementById('recordedAudio');
+            audioElement.src = URL.createObjectURL(blob);
+            audioElement.play();
+            document.getElementById('removeRecording').disabled = false;
           });
-  });
-}
+        };
 
-function stopRecording() {
-  mediaRecorder.stop();
-  document.getElementById('startRecording').disabled = false;
-  document.getElementById('stopRecording').disabled = true;
-  document.getElementById('removeRecording').disabled = false;
-}
+        mediaRecorder.start();
+        document.getElementById('startRecording').disabled = true;
+        document.getElementById('stopRecording').disabled = false;
+        document.getElementById('removeRecording').disabled = true;
+      })
+      .catch(function(err) {
+        console.error('Error accessing microphone:', err);
+      });
+  }
 
-function removeRecording() {
-  recordedChunks = [];
-  const audioElement = document.getElementById('recordedAudio');
-  audioElement.src = '';
-  document.getElementById('removeRecording').disabled = true;
-}
+  function stopRecording() {
+    mediaRecorder.stop();
+    document.getElementById('startRecording').disabled = false;
+    document.getElementById('stopRecording').disabled = true;
+    document.getElementById('removeRecording').disabled = false;
+  }
 
-function returnRecording(callback) {
-  const blob = new Blob(recordedChunks, { type: 'audio/mpeg' });
-  callback(blob);
-}
+  function removeRecording() {
+    recordedChunks = [];
+    const audioElement = document.getElementById('recordedAudio');
+    audioElement.src = '';
+    document.getElementById('removeRecording').disabled = true;
+  }
 
-document.getElementById('startRecording').addEventListener('click', startRecording);
-document.getElementById('stopRecording').addEventListener('click', stopRecording);
-document.getElementById('removeRecording').addEventListener('click', removeRecording);
+  function returnRecording(callback) {
+    const blob = new Blob(recordedChunks, { type: 'audio/mpeg' });
+    callback(blob);
+  }
+
+  document.getElementById('startRecording').addEventListener('click', startRecording);
+  document.getElementById('stopRecording').addEventListener('click', stopRecording);
+  document.getElementById('removeRecording').addEventListener('click', removeRecording);
 
 
   function FrequencyAnalyzer() {
